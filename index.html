@@ -51,7 +51,7 @@
                 </div>
 
                 <button id="ct_translateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow transition mb-6 opacity-50 cursor-not-allowed" disabled>
-                    Run CT ➔ MRI (Models G & I)
+                    Run CT ➔ MRI (Models G & J)
                 </button>
 
                 <div class="flex-grow flex flex-col items-center justify-center bg-blue-50 rounded-lg border border-blue-100 p-4 min-h-[300px]">
@@ -62,7 +62,7 @@
 
                     <div id="ct_loading" class="hidden flex-col items-center">
                         <div class="loader ease-linear rounded-full border-4 border-t-4 border-blue-500 h-12 w-12 mb-3"></div>
-                        <p class="text-sm font-bold text-blue-700">Generators G & I are processing 512x512...</p>
+                        <p class="text-sm font-bold text-blue-700">Generators G & J are processing 512x512...</p>
                     </div>
 
                     <div id="ct_resultArea" class="hidden w-full grid grid-cols-2 gap-4">
@@ -74,10 +74,10 @@
                             </a>
                         </div>
                         <div class="flex flex-col items-center">
-                            <span class="text-xs font-bold text-blue-700 mb-2 uppercase tracking-wider">Model I Output</span>
-                            <img id="ct_result_I" class="w-full aspect-square object-cover bg-black rounded-lg shadow-md mb-3 border-2 border-blue-400">
-                            <a id="ct_download_I" href="#" download="MRI_Model_I.png" class="text-white bg-green-600 hover:bg-green-700 font-bold text-xs px-4 py-2 rounded-full transition shadow">
-                                ⬇️ Download I
+                            <span class="text-xs font-bold text-blue-700 mb-2 uppercase tracking-wider">Model J Output</span>
+                            <img id="ct_result_J" class="w-full aspect-square object-cover bg-black rounded-lg shadow-md mb-3 border-2 border-blue-400">
+                            <a id="ct_download_J" href="#" download="MRI_Model_J.png" class="text-white bg-green-600 hover:bg-green-700 font-bold text-xs px-4 py-2 rounded-full transition shadow">
+                                ⬇️ Download J
                             </a>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                 </div>
 
                 <button id="mri_translateBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg shadow transition mb-6 opacity-50 cursor-not-allowed" disabled>
-                    Run MRI ➔ CT (Models F & J)
+                    Run MRI ➔ CT (Models F & I)
                 </button>
 
                 <div class="flex-grow flex flex-col items-center justify-center bg-purple-50 rounded-lg border border-purple-100 p-4 min-h-[300px]">
@@ -115,7 +115,7 @@
 
                     <div id="mri_loading" class="hidden flex-col items-center">
                         <div class="loader ease-linear rounded-full border-4 border-t-4 border-purple-500 h-12 w-12 mb-3"></div>
-                        <p class="text-sm font-bold text-purple-700">Generators F & J are processing & denoising...</p>
+                        <p class="text-sm font-bold text-purple-700">Generators F & I are processing & denoising...</p>
                     </div>
 
                     <div id="mri_resultArea" class="hidden w-full grid grid-cols-2 gap-4">
@@ -127,10 +127,10 @@
                             </a>
                         </div>
                         <div class="flex flex-col items-center">
-                            <span class="text-xs font-bold text-purple-700 mb-2 uppercase tracking-wider">Model J Output</span>
-                            <img id="mri_result_J" class="w-full aspect-square object-cover bg-black rounded-lg shadow-md mb-3 border-2 border-purple-400">
-                            <a id="mri_download_J" href="#" download="CT_Model_J.png" class="text-white bg-green-600 hover:bg-green-700 font-bold text-xs px-4 py-2 rounded-full transition shadow">
-                                ⬇️ Download J
+                            <span class="text-xs font-bold text-purple-700 mb-2 uppercase tracking-wider">Model I Output</span>
+                            <img id="mri_result_I" class="w-full aspect-square object-cover bg-black rounded-lg shadow-md mb-3 border-2 border-purple-400">
+                            <a id="mri_download_I" href="#" download="CT_Model_I.png" class="text-white bg-green-600 hover:bg-green-700 font-bold text-xs px-4 py-2 rounded-full transition shadow">
+                                ⬇️ Download I
                             </a>
                         </div>
                     </div>
@@ -141,7 +141,8 @@
     </main>
 
     <script>
-        const API_URL  = "https://i-translation-backend-v15-production.up.railway.app/convert";
+        // Make sure this matches your live Railway URL!
+        const API_URL = "https://i-translation-backend-v15-production.up.railway.app/convert";
 
         function setupTranslationPanel(prefix, conversionType, model1, model2) {
             const input = document.getElementById(`${prefix}_input`);
@@ -165,7 +166,7 @@
 
             let currentFile = null;
 
-            // Handle file upload preview (Supports DICOM placeholder)
+            // Handle file upload preview
             input.addEventListener('change', (e) => {
                 if (e.target.files.length > 0) {
                     currentFile = e.target.files[0];
@@ -267,9 +268,10 @@
             });
         }
 
-        // Initialize both translation panels with their respective model letters
-        setupTranslationPanel('ct', 'ct_to_mri', 'G', 'I');
-        setupTranslationPanel('mri', 'mri_to_ct', 'F', 'J');
+        // --- THE MAGIC UPDATE ---
+        // We swapped the letters so G&J run on CT inputs, and F&I run on MRI inputs.
+        setupTranslationPanel('ct', 'ct_to_mri', 'G', 'J');
+        setupTranslationPanel('mri', 'mri_to_ct', 'F', 'I');
 
     </script>
 </body>
